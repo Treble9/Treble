@@ -36,3 +36,5 @@ Run the database migrations: npm run migrate
 
 Starting the API
 
+
+This is the repo hosting our submission for the Treblle Hackaton
