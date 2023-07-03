@@ -1,4 +1,6 @@
-TREBLE
+This is a submission for the Treblle API Hackathon (a 5-day hackathon that kicks off on the 3rd of July, 2023 to the 7th of July, 2023).
+
+Team Name: The TREBLE
 
 Collaborative Project Management API
 
