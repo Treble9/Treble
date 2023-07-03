@@ -21,7 +21,7 @@ Getting Started
 Installation:
 
 
-1. Clone this repository: git clone [[https://github.com/your-username/treblle.git](https://github.com/Treble9/Treble.git)](https://github.com/Treble9/Treble.git)
+1. Clone this repository: git clone (https://github.com/Treble9/Treble.git)
 2. Install the dependencies: npm install
 
 Configuration
