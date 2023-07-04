@@ -1,11 +1,12 @@
 import express from 'express'
 const app = express();
+import treblle from '@treblle/express';
 
 import dotenv from 'dotenv'
 dotenv.config();
 
 // Importing the DB Connection
-import { dbConnection } from './db/connectToDb';
+import dbConnection  from './db/connectToDb.js';
 
 const PORT = process.env.PORT || 4000;
 
@@ -23,11 +24,17 @@ const PORT = process.env.PORT || 4000;
     }
 })()
 
-
-
+// Initializing the middlewares
+app.use(
+    treblle({
+        apiKey: process.env.TREBLLE_API_KEY,
+        projectId: process.env.TREBLLE_PROJECT_ID,
+        additionalFieldsToMask: [],
+    })
+)
 
 import authRoutes from './routes/authRoutes.js';
-import apiRoutes from './routes/api/';
+import apiRoutes from './routes/api/index.js';
 
 // Authentication Routes
 app.use('/${process.env.API_BASE_URL}/auth', authRoutes);

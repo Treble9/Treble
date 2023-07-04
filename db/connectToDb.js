@@ -7,7 +7,5 @@ const options = {
 
 const dbConnection = (url) => connect(url, options);
 
-export default {
-    dbConnection
-};
+export default dbConnection
 
