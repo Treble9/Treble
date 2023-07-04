@@ -1,7 +1,7 @@
 import express from 'express'
 const Router = express.Router();
 
-import {register_post} from '../controller/authController.js'
+import {register_post} from '../controllers/authController.js'
 
 
 Router.route('/register')
