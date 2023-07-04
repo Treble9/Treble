@@ -12,13 +12,13 @@ const userSchema = new Schema({
         type: String,
         required: true,
         default: "USER",
-    }
+    },
     // Additional user fields can be added here
 }, { timestamps: true });
 
 userSchema.statics.createAccount = async function (email, password) {
     try {
-        const newUser = await this.create({ email });
+        const newUser = await this.create()
         const createdPassword = await Auth.create({who: newUser._id, secret: password});
 
     } catch (error) {
