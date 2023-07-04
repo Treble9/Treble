@@ -12,8 +12,13 @@ const commentSchema = new Schema({
         ref: 'Task',
         required: true
     },
+    author: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'User',
+    }
     // Additional comment fields can be added here
-});
+}, { timestamps: true });
 
 const Comment = model('Comment', commentSchema);
 export default Comment;

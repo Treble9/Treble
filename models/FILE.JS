@@ -14,7 +14,7 @@ const fileSchema = new Schema({
         required: true
     },
     // Additional file fields can be added here
-});
+}, {timestamps: true});
 
 
 const File = model('File', fileSchema);

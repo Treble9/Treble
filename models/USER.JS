@@ -11,8 +11,13 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    role: {
+        type: String,
+        required: true,
+        default: "",
+    }
     // Additional user fields can be added here
-});
+}, { timestamps: true });
 
 const User = model('User', userSchema);
 
