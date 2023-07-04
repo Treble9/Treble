@@ -7,4 +7,6 @@ export const ROLES = {
     ADMIN: '562891' //everything + create and delete projects
 }
 export const PROJECT_STATUS = ["NOT STARTED", "IN PROGRESS", "ON HOLD", "COMPLETED", "CANCELLED"];
+export const MILESTONE_STATUS = ["TRUE", "FALSE"];
+export const TASK_STATUS = ["NOT STARTED", "IN PROGRESS", "ON HOLD", "COMPLETED", "CANCELLED"];
 
