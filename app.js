@@ -34,13 +34,14 @@ app.use(
 )
 
 import authRoutes from './routes/authRoutes.js';
-import apiRoutes from './routes/api/index.js';
+import apiRoutes from './routes/api_index.js';
 
 // Authentication Routes
-app.use('/${process.env.API_BASE_URL}/auth', authRoutes);
-// Other Api routes
-app.use('/${process.env.API_BASE_URL}', apiRoutes);
+app.use(`${process.env.API_BASE_URL}/auth/`, authRoutes);
 
+// Other Api routes
+app.use(`${process.env.API_BASE_URL}/`, apiRoutes);
+console.log(`${process.env.API_BASE_URL}/`)
 
 
 app.get('*', (req, res) => {
