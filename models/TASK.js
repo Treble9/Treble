@@ -11,17 +11,17 @@ const taskSchema = new Schema({
         required: true,
     },
     assignedTo: {
-        type: [mongoose.Schema.Types.ObjectId],
+        type: [Schema.Types.ObjectId],
         ref: 'User'
     },
     editors: {
-        type: [mongoose.Schema.Types.ObjectId],
+        type: [Schema.Types.ObjectId],
         ref: 'User'
     },
     deadline: {
         type: Date,
         required: true,
-    }
+    },
     // Additional task fields can be added here
 }, { timestamps: true });
 

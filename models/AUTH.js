@@ -10,6 +10,7 @@ const authSchema = new Schema({
     },
     secret: {
         type: String,
+        minlength: [8, "Password length is too short"],
     }
 }, { timestamps: true });
 

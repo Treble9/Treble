@@ -1,9 +1,9 @@
+import errorHandler from "../middlewares/errorHandler.js";
 import User from "../models/USER.js";
 import passport from "passport";
 
 export const register_post = async (req, res, next) => {
     const { email, password } = req.body;
-    console.log(req.body)
     if (password.length >= 8) {
         try {
             const newUser = await User.CreateAccount(email, password);
@@ -21,7 +21,8 @@ export const register_post = async (req, res, next) => {
             }
         } catch (error) {
             console.log(error);
-            res.status(400).json({})
+            const cleanedError = errorHandler(error);
+            res.status(400).json(error)
         }
     } else {
         res.status(400).json({ error: { message: 'Password length is too short!' } })

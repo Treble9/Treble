@@ -4,7 +4,6 @@ const organizationSchema = new Schema({
     name: {
         type: String,
         required: true,
-        unique: true
     },
     description: {
         type: String,
@@ -12,17 +11,15 @@ const organizationSchema = new Schema({
     },
     teams: [{
         type: Schema.Types.ObjectId,
-        ref: 'Team'
+        ref: 'Team',
+        default: undefined,
     }],
     projects: [{
         type: Schema.Types.ObjectId,
-        ref: 'Project'
+        ref: 'Project',
+        default: undefined,
     }],
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
-});
+}, { timestamps: true });
 
 const Organization = model('Organization', organizationSchema);
 

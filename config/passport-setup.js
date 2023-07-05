@@ -32,7 +32,6 @@ const passportConfig = (passport) => {
                 passReqToCallback: true
             },
             async (req, email, password, next) => {
-                console.log(req.body);
                 try {
                     const result = await User.Login(email, password);
                     next(null, result);
