@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Project  from "../models/PROJECT.JS";
+import Project  from "../models/PROJECT.js";
 
 export const getProjects = async (req, res) => {
     //to get auth projects, the id of the project owner must be generated
