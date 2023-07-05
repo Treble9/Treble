@@ -1,7 +1,6 @@
 import express from 'express'
 const app = express();
 import passport from 'passport';
-const { initialize, session } = passport;
 import passportConfig from './config/passport-setup.js'
 passportConfig(passport);
 import cookieSession from 'cookie-session';
@@ -23,7 +22,7 @@ const PORT = process.env.PORT || 4000;
         console.log("DB instance initialized and connected to!");
         app.listen(PORT, () => {
             console.log('Now listening for requests');
-            console.log(`Visit http://${process.env.HOST}:${process.env.PORT}`);
+            console.log(`Visit http://${process.env.HOST}:${process.env.PORT}/${process.env.API_BASE_URL}`);
         })
     } catch (error) {
         console.log(error)
@@ -66,11 +65,10 @@ import authRoutes from './routes/authRoutes.js';
 import apiRoutes from './routes/api_index.js';
 
 // Authentication Routes
-app.use(`${process.env.API_BASE_URL}/auth/`, authRoutes);
+app.use(`/${process.env.API_BASE_URL}/auth/`, authRoutes);
 
 // Other Api routes
-app.use(`${process.env.API_BASE_URL}/`, apiRoutes);
-console.log(`${process.env.API_BASE_URL}/`)
+app.use(`/${process.env.API_BASE_URL}/`, apiRoutes);
 
 
 app.get('*', (req, res) => {
