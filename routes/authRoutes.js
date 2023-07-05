@@ -4,10 +4,16 @@ import { local_scope, logout_post, register_post } from '../controllers/authCont
 import { ensureLoggedIn, ensureLoggedOut } from '../middlewares/authenticate.js';
 
 Router.route('/register')
-    .post(ensureLoggedOut(), register_post);
+    .post(
+        // ensureLoggedOut(),
+        register_post);
 
 Router.route('/login')
-    .post(ensureLoggedOut(), local_scope);
+    .post(
+        ensureLoggedOut(),
+        local_scope, (req, res) => {
+            res.status(200).json({ status: "Success", message: "Logged In Successfully" });
+        });
 
 Router.route('/logout')
     .post(ensureLoggedIn(), logout_post);

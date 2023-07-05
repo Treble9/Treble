@@ -2,16 +2,17 @@ import mongoose from "mongoose";
 import Project  from "../models/PROJECT.js";
 
 export const getProjects = async (req, res) => {
+    console.log('creating post');
     //to get auth projects, the id of the project owner must be generated
     // find project attached to user
    //if no project attached to user send no project
 
-    try{
-        const getUserProject = await Project.find(); //PostMessage.find takes time so we make it asynchronous
-        res.status(200).json(getUserProject)
-    } catch(err) {
-        res.status(404).json({ message: err.message });
-    }
+    // try{
+    //     const getUserProject = await Project.find(); //PostMessage.find takes time so we make it asynchronous
+    //     res.status(200).json(getUserProject)
+    // } catch(err) {
+    //     res.status(404).json({ message: err.message });
+    // }
 }
 
 // export const createPosts = async (req, res) => {
@@ -69,3 +70,31 @@ export const getProjects = async (req, res) => {
 //     res.status(200).json(updatedPost);
 
 // } 
+
+
+// Controller function to update project progress
+// const updateProjectProgress = async (req, res) => {
+//     const { projectId, status, completionPercentage } = req.body;
+
+//     try {
+//         // Find the project by projectId
+//         const project = await Project.findById(projectId);
+//         if (!project) {
+//             return res.status(404).json({ error: 'Project not found' });
+//         }
+
+//         // Update the project progress
+//         project.status = status;
+//         project.completionPercentage = completionPercentage;
+
+//         // Save the updated project to the database
+//         await project.save();
+
+//         // Return the updated project as the response
+//         res.status(200).json({ project });
+
+//     } catch (error) {
+//         console.error('Error updating project progress:', error);
+//         res.status(500).json({ error: 'Internal server error' });
+//     }
+// };

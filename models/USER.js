@@ -1,18 +1,26 @@
 import { Schema, model } from 'mongoose';
 import Auth from './AUTH.js';
 import bcrypt from 'bcrypt';
-
+import pkg from 'validator';
+const { isEmail } = pkg;
 // User Model
 const userSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        lowercase: true,
+        validate: [isEmail, "Please provide a valid email address"]
     },
     role: {
         type: String,
         required: true,
-        default: "485932",
+        enum: ['485932', '716450', '209743', '562891'],
+        default: "485932", //normal user
+        // default: "716450", //member
+        // default: "209743", //lead
+        // default: "562891"  //admin
+
     },
     verified: {
         type: Boolean,
@@ -35,7 +43,6 @@ userSchema.statics.CreateAccount = async function (email, password) {
         const createdPassword = await Auth.create({ who: newUser._id, secret: password });
         return newUser;
     } catch (error) {
-        console.log(error);
         throw error;
     }
 }

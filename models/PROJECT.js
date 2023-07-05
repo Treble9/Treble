@@ -23,7 +23,7 @@ const projectSchema = new Schema({
         type: [Schema.Types.ObjectId],
         ref: 'User',
         required: true
-    }
+    },
     // Additional project fields can be added here
 }, { timestamps: true });
 
