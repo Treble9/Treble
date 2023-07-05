@@ -1,4 +1,5 @@
 import User from "../models/USER";
+import Project from "../models/PROJECT";
 import { ROLES } from "../utils/constant";
 
 export const ensureEmployee = async (req, res, next) => {
@@ -38,13 +39,36 @@ export const ensureTeamMember = async (req, res, next) => {
 };
 
 // 
-export const canCreate = (...roles) => {
-    return (req, res, next) => {
+export const canCreate = async (...roles) => {
+    return async (req, res, next) => {
         const user = req.user;
-        if (user.role == ROLES.ADMIN || user.role == ROLES.PROJECT_MANAGER) next();
-        res.status(403).json({ error: "You are not authorized to create a Project" })
+        if (user.role == ROLES.ADMIN) next();
+        try {
+            const canAccess = await Project.findById(projectId, leads);
+            const isLead = canAccess.includes(user._id);
+            if (isLead) next()
+        } catch (error) {
+            res.status(403).json({ error: "You are not authorized to create a Project" })
+        }
     }
 }
+
+
+export const canDelete = async (...roles) => {
+    return async (req, res, next) => {
+        const user = req.user;
+        if (user.role == ROLES.ADMIN) next();
+        try {
+            const canAccess = await Project.findById(projectId, leads);
+            const isLead = canAccess.includes(user._id);
+            if (isLead) next()
+        } catch (error) {
+            res.status(403).json({ error: "You are not authorized to create a Project" })
+        }
+    }
+}
+
+
 // Can edit the Task.
 export const canUpdate = (...roles) => {
     return (req, res, next) => {
@@ -54,11 +78,5 @@ export const canUpdate = (...roles) => {
     }
 }
 
-export const canDelete = (...roles) => {
-    return (req, res, next) => {
-        const user = req.user;
-        if (user.role == ROLES.ADMIN || user.role == ROLES.PROJECT_MANAGER) next();
-        res.status(403).json({ error: "You are not authorized to delete this Project" })
-    }
-}
 
+//

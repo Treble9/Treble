@@ -5,7 +5,7 @@ import { getProjects } from "../../controllers/projectControllers.js";
 
 const router = Router();
 
-router.get('/projects',
+router.post('/projects',
 //  authorizer, 
  getProjects);
 

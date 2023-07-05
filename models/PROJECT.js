@@ -18,6 +18,11 @@ const projectSchema = new Schema({
     teams: {
         type: [Schema.Types.ObjectId],
         ref: 'Team',
+    },
+    leads: {
+        type: [Schema.Types.ObjectId],
+        ref: 'User',
+        required: true
     }
     // Additional project fields can be added here
 }, { timestamps: true });
