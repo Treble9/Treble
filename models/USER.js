@@ -33,7 +33,12 @@ const userSchema = new Schema({
     team: {
         type: [Schema.Types.ObjectId],
         ref: 'Team'
-    }
+    },
+    active: {
+        type: Boolean,
+        default: true,
+        select: false,
+    },
 }, { timestamps: true });
 
 userSchema.statics.CreateAccount = async function (email, password) {
@@ -84,6 +89,11 @@ userSchema.statics.getUserTeams = async function (userId) {
         throw error;
     }
 }
+
+// Ensure only active users show
+// userSchema.pre(/^find/, function (next) {
+//     this.find({ active: {$ne: false} })
+// });
 
 
 const User = model('User', userSchema);

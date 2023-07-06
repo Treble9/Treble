@@ -11,6 +11,7 @@ const authSchema = new Schema({
     secret: {
         type: String,
         minlength: [8, "Password length is too short"],
+        required: [true, "Please provide a password"]
     }
 }, { timestamps: true });
 

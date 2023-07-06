@@ -5,7 +5,7 @@ import { ensureLoggedIn, ensureLoggedOut } from '../middlewares/authenticate.js'
 
 Router.route('/register')
     .post(
-        // ensureLoggedOut(),
+        ensureLoggedOut(),
         register_post);
 
 Router.route('/login')
@@ -16,7 +16,9 @@ Router.route('/login')
         });
 
 Router.route('/logout')
-    .post(ensureLoggedIn(), logout_post);
+    .post(
+        ensureLoggedIn(),
+        logout_post);
 
 
 export default Router;
