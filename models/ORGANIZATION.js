@@ -1,6 +1,12 @@
 import { Schema, model } from 'mongoose';
+import { randomUUID } from 'crypto';
+
 
 const organizationSchema = new Schema({
+    _id: {
+        type: Schema.Types.UUID,
+        default: () => randomUUID()
+    },
     name: {
         type: String,
         required: true,
@@ -10,12 +16,12 @@ const organizationSchema = new Schema({
         required: true
     },
     teams: [{
-        type: Schema.Types.ObjectId,
+        type: Schema.Types.UUID,
         ref: 'Team',
         default: undefined,
     }],
     projects: [{
-        type: Schema.Types.ObjectId,
+        type: Schema.Types.UUID,
         ref: 'Project',
         default: undefined,
     }],
