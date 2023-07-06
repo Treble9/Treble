@@ -1,100 +1,53 @@
 import mongoose from "mongoose";
-import Project  from "../models/PROJECT.js";
+import Project from "../models/PROJECT.js";
+import User from "../models/USER.js";
 
 export const getProjects = async (req, res) => {
-    console.log('creating post');
-    //to get auth projects, the id of the project owner must be generated
-    // find project attached to user
-   //if no project attached to user send no project
 
-    // try{
-    //     const getUserProject = await Project.find(); //PostMessage.find takes time so we make it asynchronous
-    //     res.status(200).json(getUserProject)
-    // } catch(err) {
-    //     res.status(404).json({ message: err.message });
-    // }
+    try {
+        const creator = req.user.email //logged in user email
+        const getUserProject = await User.find(creator).populate('projects');
+        res.status(200).json({ status: 'Success', data: getUserProject })
+    } catch (err) {
+        res.status(404).json({ status: 'Error', message: err.message });
+    }
 }
 
-// export const createPosts = async (req, res) => {
-         // when creating project, id of the creator should be added to the model
-//     const post = req.body; //post takes in the input passed from the frontend as a request (to create post containing the values gotten from the input) 
+export const createProject = async (req, res) => {
+    //when creating project, id of the creator should be added to the model
+    const project = req.body;
 
-//     const newPost = new PostMessage({ ...post, creator: req.userId, createdAt: new Date().toISOString()}) //the post values maps the PostMessages schema to create a new post in the db
-//     try {
-//         await newPost.save(); //asynchronous function, saves newPost in db
-//         res.status(201).json(newPost);
-//     } catch(err) {
-//         res.status(409).json({ message: err.message });
-//     }
-// }
+    const newProject = new Project({ ...project, creator: req.email, createdAt: new Date().toISOString() })
+    try {
+        await newProject.save();
+        res.status(201).json({ status: 'Success', data: newProject });
+    } catch (err) {
+        res.status(409).json({ status: 'Error', message: err.message });
+    }
+}
 
-// export const updatePosts = async (req, res) => {
-//     const { id: _id} = req.params;
-//     const postToUpdate = req.body;
+export const getProjectDetails = async (req, res) => {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({ status: 'Error', message: 'No project with that id' });
+    const project = await Project.find();
+    res.status(200).json({ status: 'Success', data: project });
+}
 
-//     if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No post with that id');
-//     const updatedPost = await PostMessage.findByIdAndUpdate(_id, postToUpdate, { new:true });
-//     res.status(200).json(updatedPost);
-// }
+export const updateProject = async (req, res) => {
+    const { id: _id } = req.params;
+    const projectToUpdate = req.body;
 
-// export const deletePosts = async (req, res) => {
-//     const { id } = req.params; 
+    if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).json({ status: 'Error', message: 'No project with that id' });
+    const updatedProject = await Project.findByIdAndUpdate(_id, projectToUpdate, { new: true });
+    res.status(200).json({ status: 'Success', data: updateProject });
+}
 
-//     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('No post with that id');
+export const deleteProjects = async (req, res) => {
+    const { id } = req.params;
 
-//     await PostMessage.findByIdAndRemove(id);
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({ status: 'Error', message: 'No project with that id' });
 
-//     res.status(200).json({message: 'Post Deleted Successfully'});
-// }
+    await Project.findByIdAndRemove(id);
 
-// export const likePosts = async (req, res) => {
-//     const { id } = req.params;
-
-//     if(!req.userId) return res.json({ message: 'Unauthenticated'})
-
-//     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('No post with that id');
-
-//     const post = await PostMessage.findById(id);
-
-//     const index = post.likes.findIndex((id) => id === String(req.userId));
-
-//     if (index === -1) {
-//         post.likes.push(req.userId);
-//     } else {
-//         post.likes = post.likes.filter((id) => id !== String(req.userId))
-//     }
-
-//     const updatedPost = await PostMessage.findByIdAndUpdate(id, post, { new: true});
-//     console.log(updatedPost)
-
-//     res.status(200).json(updatedPost);
-
-// } 
-
-
-// Controller function to update project progress
-// const updateProjectProgress = async (req, res) => {
-//     const { projectId, status, completionPercentage } = req.body;
-
-//     try {
-//         // Find the project by projectId
-//         const project = await Project.findById(projectId);
-//         if (!project) {
-//             return res.status(404).json({ error: 'Project not found' });
-//         }
-
-//         // Update the project progress
-//         project.status = status;
-//         project.completionPercentage = completionPercentage;
-
-//         // Save the updated project to the database
-//         await project.save();
-
-//         // Return the updated project as the response
-//         res.status(200).json({ project });
-
-//     } catch (error) {
-//         console.error('Error updating project progress:', error);
-//         res.status(500).json({ error: 'Internal server error' });
-//     }
-// };
+    res.status(200).json({ status: 'Success', message: 'Project deleted successfully' });
+}

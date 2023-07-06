@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { registerCompany, updateCompanyDetails } from "../../controllers/organizationController.js";
+import {
+    registerCompany,
+    updateCompanyDetails
+} from "../../controllers/organizationControllers.js";
 const router = Router();
 
 router.post('/create', registerCompany);
