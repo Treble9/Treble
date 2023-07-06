@@ -8,7 +8,11 @@ Project Name: Collaborative Project Management API
 
 Description:
 
+<<<<<<< HEAD
+Build an API for a collaborative project management system that allows teams to organize and track projectsgi, tasks, and milestones. The API should provide features for creating projects, assigning tasks, setting deadlines, tracking progress, and facilitating communication among team members.The API should provide features for creating projects, assigning tasks, setting deadlines, tracking progress, and facilitating communication among team members.
+=======
 Our API is a collaborative project management system that allows teams to organize and track projects, tasks, and milestones. 
+>>>>>>> 063b6f95a05a8e998ce1287c80abe3e781f9316b
 
 Below is an outline of the features:
 1. Create projects: Allows users to create new projects with relevant details such as project name, description, and team members.

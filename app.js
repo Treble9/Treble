@@ -10,6 +10,10 @@ import xss from 'xss-clean'
 import ExpressMongoSanitize from 'express-mongo-sanitize';
 import hpp from 'hpp';
 import treblle from '@treblle/express';
+import Organization from './models/ORGANIZATION.js';
+import PROJECT from './models/PROJECT.js';
+import TEAM from './models/TEAM.js';
+import TASK from './models/TASK.js';
 
 import dotenv from 'dotenv'
 dotenv.config();
@@ -72,6 +76,58 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Implementing the Organization, Tasks, Projet and Teams
+//Creating an Organization
+app.post('/ORGANIZATION', async (req, res) => {
+  const { name, details } = req.body;
+
+  try {
+    const organization = await Organization.create({ name, details });
+    res.status(201).json({ organization, message: 'Organization created successfully' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Failed to create organization' });
+  }
+});
+
+//Create Team
+app.post('/TEAMS', async (req, res) => {
+  const { organizationId, name } = req.body;
+
+  try {
+    const team = await TEAM.create({ organizationId, name });
+    res.status(201).json({ team, message: 'Team created successfully' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Failed to create team' });
+  }
+});
+
+//Create Project
+app.post('/PROJECT', async (req, res) => {
+  const { teamId, name } = req.body;
+
+  try {
+    const project = await PROJECT.create({ teamId, name });
+    res.status(201).json({ project, message: 'Project created successfully' });
+  } catch (error) {
+    console.log(error);
+   res.status(500).json({ error: 'Failed to create project' });
+  }
+});
+
+//Create Task
+app.post('/TASK', async (req, res) => {
+  const { projectId, details } = req.body;
+
+  try {
+    const task = await TASK.create({ projectId, details });
+    res.status(201).json({ task, message: 'Task created successfully' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Failed to create task' });
+  }
+});
 //work around for passport 0.6.0
 app.use(function (request, response, next) {
     if (request.session && !request.session.regenerate) {
