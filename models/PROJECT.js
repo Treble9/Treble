@@ -1,8 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { randomUUID } from 'crypto';
 
-
-// Project Model
 const projectSchema = new Schema({
     _id: {
         type: Schema.Types.UUID,
@@ -29,7 +27,6 @@ const projectSchema = new Schema({
         ref: 'User',
         required: true
     },
-    // Additional project fields can be added here
 }, { timestamps: true });
 
 
@@ -38,12 +35,9 @@ projectSchema.statics.getPermittedTeams = async function (projectId) {
         const permittedTeams = this.findById(projectId, teams);
         return permittedTeams;
     } catch (error) {
-        console.log(error);
         throw error;
     }
 }
-
-
 
 const Project = model('Project', projectSchema);
 export default Project;

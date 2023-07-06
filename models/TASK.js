@@ -1,8 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { randomUUID } from 'crypto';
 
-
-// Task Model
 const taskSchema = new Schema({
     _id: {
         type: Schema.Types.UUID,
@@ -28,7 +26,6 @@ const taskSchema = new Schema({
         type: Date,
         required: true,
     },
-    // Additional task fields can be added here
 }, { timestamps: true });
 
 
@@ -37,7 +34,6 @@ taskSchema.statics.getEditors = async function (taskId) {
         const editors = this.findById(taskId, editors);
         return editors;
     } catch (error) {
-        console.log(error);
         throw error;
     }
 }

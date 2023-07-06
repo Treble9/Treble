@@ -1,7 +1,6 @@
 import { Schema, model } from "mongoose";
 import { randomUUID } from 'crypto';
 
-
 const reportSchema = new Schema({
     _id: {
         type: Schema.Types.UUID,

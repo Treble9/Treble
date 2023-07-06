@@ -2,7 +2,6 @@ import { Schema, model } from 'mongoose';
 import { randomUUID } from 'crypto';
 
 
-
 // Comment Model
 const commentSchema = new Schema({
     _id: {
@@ -23,7 +22,6 @@ const commentSchema = new Schema({
         required: true,
         ref: 'User',
     }
-    // Additional comment fields can be added here
 }, { timestamps: true });
 
 const Comment = model('Comment', commentSchema);

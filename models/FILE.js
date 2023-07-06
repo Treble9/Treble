@@ -2,8 +2,6 @@
 import { Schema, model } from 'mongoose';
 import { randomUUID } from 'crypto';
 
-
-
 // File Model
 const fileSchema = new Schema({
     _id: {
@@ -19,7 +17,6 @@ const fileSchema = new Schema({
         ref: 'Task',
         required: true
     },
-    // Additional file fields can be added here
 }, { timestamps: true });
 
 
