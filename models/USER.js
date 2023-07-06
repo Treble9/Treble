@@ -31,7 +31,8 @@ const userSchema = new Schema({
     },
     verified: {
         type: Boolean,
-        default: false
+        default: false,
+        select: false,
     },
     organization: {
         type: Schema.Types.UUID,
@@ -39,7 +40,9 @@ const userSchema = new Schema({
     },
     team: {
         type: [Schema.Types.ObjectId],
-        ref: 'Team'
+        ref: 'Team',
+        select: false,
+        default: undefined
     },
     active: {
         type: Boolean,
@@ -48,10 +51,10 @@ const userSchema = new Schema({
     },
 }, { timestamps: true });
 
-// userSchema.pre(/^find/, function (next) {
-//     this.find({ active: { $ne: false } });
-//     next();
-// });
+userSchema.pre(/^find/, function (next) {
+    this.find({ active: { $ne: false } });
+    next();
+});
 
 userSchema.statics.CreateAccount = async function (email, password) {
     console.log(email, password)
@@ -75,7 +78,6 @@ userSchema.statics.Login = async function (email, password) {
         }
         throw new Error('Incorrect Password');
     } catch (error) {
-        console.log(error);
         throw error;
     }
 }
@@ -88,7 +90,6 @@ userSchema.statics.isOrganizationEmployee = async function (userId, organization
         }
         return false
     } catch (error) {
-        console.log(error);
         throw error;
     }
 }
@@ -97,12 +98,9 @@ userSchema.statics.getUserTeams = async function (userId) {
     try {
         const userTeams = await this.findById(userId, team);
     } catch (error) {
-        console.log(error);
         throw error;
     }
 }
-
-
 
 const User = model('User', userSchema);
 

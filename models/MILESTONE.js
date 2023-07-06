@@ -2,7 +2,6 @@ import { Schema, model } from 'mongoose';
 import { randomUUID } from 'crypto';
 
 
-// Milestone Model
 const milestoneSchema = new Schema({
     _id: {
         type: Schema.Types.UUID,
@@ -17,8 +16,6 @@ const milestoneSchema = new Schema({
         ref: 'Project',
         required: true
     },
-
-    // Additional milestone fields can be added here
 }, { timestamps: true });
 
 const Milestone = model('Milestone', milestoneSchema);

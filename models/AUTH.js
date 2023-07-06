@@ -6,7 +6,7 @@ import { randomUUID } from 'crypto';
 const authSchema = new Schema({
      _id: {
         type: Schema.Types.UUID,
-        default: () => randomUUID()
+        default: () => randomUUID(),
     },
     who: {
         type: Schema.Types.UUID,
@@ -26,11 +26,9 @@ authSchema.pre('save', async function (next) {
     try {
         const salt = await genSalt();
         this.secret = await hash(this.secret, salt);
-        console.log(this.secret)
         next();
     } catch (error) {
-        console.log(error);
-        throw error('Something Wrong Happened');
+        throw error;
     }
 });
 
