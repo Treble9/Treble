@@ -1,5 +1,56 @@
-const { default: Project } = require("../models/PROJECT");
-const { default: Task } = require("../models/TASK");
+import mongoose from "mongoose";
+import Project from "../models/PROJECT.js";
+import Task from "../models/TASK.js";
+
+export const getTasks = async (req, res) => {
+
+    try {
+        const projectId = req.project.id //projectId
+        const getAllTasks = await Project.find(projectId).populate('tasks');
+        res.status(200).json({ status: 'Success', data: getAllTasks })
+    } catch (err) {
+        res.status(404).json({ status: 'Error', message: err.message });
+    }
+}
+
+export const createTask = async (req, res) => {
+    //when creating project, id of the creator should be added to the model
+    const task = req.body;
+
+    const newTask = new Task({ ...task, projectId: req.projectId, createdAt: new Date().toISOString() }) //projectTitle: req.title
+    try {
+        await newTask.save();
+        res.status(201).json({ status: 'Success', data: newTask });
+    } catch (err) {
+        res.status(409).json({ status: 'Error', message: err.message });
+    }
+}
+
+export const getTaskDetails = async (req, res) => {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({ status: 'Error', message: 'No task with that id' });
+    const task = await Task.find();
+    res.status(200).json({ status: 'Success', data: task });
+}
+
+export const updateTask = async (req, res) => {
+    const { id: _id } = req.params;
+    const taskToUpdate = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).json({ status: 'Error', message: 'No task with that id' });
+    const updatedTask = await Task.findByIdAndUpdate(_id, taskToUpdate, { new: true });
+    res.status(200).json({ status: 'Success', data: updatedTask });
+}
+
+export const deleteTask = async (req, res) => {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({ status: 'Error', message: 'No task with that id' });
+
+    await Task.findByIdAndRemove(id);
+
+    res.status(200).json({ status: 'Success', message: 'Task deleted successfully' });
+}
 
 // Controller function to assign a task to a team member
 export const assignTask = async (req, res) => {

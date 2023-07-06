@@ -4,7 +4,7 @@ import { ROLES } from "../utils/constant.js";
 import Task from "../models/TASK.js";
 
 // Can edit the Task.
-export const canUpdate = (...roles) => {
+ const canUpdate = (...roles) => {
     return async (req, res, next) => {
         const user = req.user;
         if (user.role == ROLES.ADMIN || user.role == ROLES.PROJECT_MANAGER) next();
@@ -13,3 +13,5 @@ export const canUpdate = (...roles) => {
         res.status(403).json({ error: "You are not authorized to edit this Project" })
     }
 }
+
+export default canUpdate;

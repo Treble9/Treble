@@ -1,6 +1,6 @@
 import express from 'express'
 const Router = express.Router();
-import { local_scope, logout_post, register_post } from '../controllers/authController.js';
+import { local_scope, logout_post, register_post } from '../controllers/authControllers.js';
 import { ensureLoggedIn, ensureLoggedOut } from '../middlewares/authenticate.js';
 
 Router.route('/register')
