@@ -1,69 +1,47 @@
-import { serializeUser, deserializeUser, use } from 'passport';
 import { Strategy as localStrategy } from 'passport-local';
-import { join } from 'path';
-import { ROLE } from '../middleware/authorizer';
+import dotenv from 'dotenv';
+dotenv.config();
 
-require('dotenv').config();
+import User from '../models/USER.js';
 
-serializeUser(async (user, next) => {
-    const userId = { id: user.id, role: user.role }
-    next(null, userId);
-})
+const passportConfig = (passport) => {
 
+    // Serialize User
+    passport.serializeUser(async (user, next) => {
+        const userId = { id: user.id, role: user.role };
+        next(null, userId);
+    });
 
-deserializeUser(async (userId, next) => {
-    try {
-        switch (userId.role) {
-            case ROLE.USER:
-                result = await User.findById(userId.id);
-                next(null, result);
-                break;
-            case ROLE.DOCTOR:
-                result = await Doctor.findById(userId.id);
-                next(null, result);
-                break;
-            case ROLE.PHARMACIST:
-                result = await Pharmacist.findById(userId.id);
-                next(null, result);
-                break;
-            default:
-                throw Error('Not Allowed');
+    // Deserialize User
+    passport.deserializeUser(async (userId, next) => {
+        try {
+            const result = await User.findById(userId.id);
+            next(null, result);
+        } catch (error) {
+            console.log(error);
+            next(error);
         }
-    } catch (error) {
-        console.log(error);
-    }
-})
+    });
 
-
-// Sign with plain email
-use(
-    new localStrategy({
-        usernameField: "email",
-        passwordField: "password",
-        passReqToCallback: true
-    },
-        async (req, email, password, next) => {
-            console.log(req.body);
-            try {
-                switch (req.body.role) {
-                    case 'user':
-                        result = await User.Login(email, password);
-                        next(null, result);
-                        break;
-                    case 'doctor':
-                        result = await Doctor.Login(email, password);
-                        next(null, result);
-                        break;
-                    case 'pharmacist':
-                        result = await Pharmacist.Login(email, password);
-                        next(null, result);
-                        break;
-                    default:
-                        throw Error('Not Allowed');
+    // Configure Local Strategy
+    passport.use(
+        new localStrategy(
+            {
+                usernameField: "email",
+                passwordField: "password",
+                passReqToCallback: true
+            },
+            async (req, email, password, next) => {
+                try {
+                    const result = await User.Login(email, password);
+                    next(null, result);
+                } catch (error) {
+                    console.log(error)
+                    next(error, null);
                 }
-            } catch (error) {
-                next(error, null);
             }
-        }))
+        )
+    );
+}
 
-
+export default passportConfig;
