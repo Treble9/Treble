@@ -12,7 +12,7 @@ export function ensureLoggedIn(options) {
             if (setReturnTo && req.session) {
                 req.session.returnTo = req.originalUrl || req.url;
             }
-            return res.status(401).json({ status: "error", message: 'Please log in to access this resource' });
+            return res.status(401).json({ status: "Error", message: 'Please log in to access this resource' });
         }
         next();
     }
@@ -29,7 +29,7 @@ export function ensureLoggedOut(options) {
 
     return function (req, res, next) {
         if (req.isAuthenticated && req.isAuthenticated()) {
-            return res.status(400).json({ status: "error", message: 'You are already logged In' });
+            return res.status(400).json({ status: "Error", message: 'You are already logged In' });
         }
         next();
     }

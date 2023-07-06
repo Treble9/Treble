@@ -4,7 +4,11 @@ import passport from 'passport';
 import passportConfig from './config/passport-setup.js'
 passportConfig(passport);
 import cookieSession from 'cookie-session';
-
+import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
+import xss from 'xss-clean'
+import ExpressMongoSanitize from 'express-mongo-sanitize';
+import hpp from 'hpp';
 import treblle from '@treblle/express';
 
 import dotenv from 'dotenv'
@@ -30,8 +34,30 @@ const PORT = process.env.PORT || 4000;
 })()
 
 // Initializing the middlewares
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: {
+        status: "Error",
+        "message": "You have exceeded the allowed rate limit for this endpoint. Please try again in an hour."
+    }
+})
+
+app.use(helmet());
+// Apply the rate limiting middleware to ohly Api route
+app.use(`/${process.env.API_BASE_URL}/`, limiter);
+// Data sanitize against NoSQL Query injection
+app.use(ExpressMongoSanitize());
+
+// Prevent Parameter Pollution
+app.use(hpp({
+    // whitelist: [] //pass the parameter you want to omit
+}))
+app.use(xss());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+app.use(express.json({ limit: '10kb' }));
 app.use(
     treblle({
         apiKey: process.env.TREBLLE_API_KEY,
@@ -41,7 +67,7 @@ app.use(
 )
 app.use(cookieSession({
     maxAge: 60 * 60 * 24 * 1000,
-    keys: ["dygf"]
+    keys: [process.env.COOKIE_SECRET]
 }))
 app.use(passport.initialize());
 app.use(passport.session());
