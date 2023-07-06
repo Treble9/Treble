@@ -1,9 +1,15 @@
 import { Schema, model } from "mongoose";
 import { genSalt, hash } from 'bcrypt';
+import { randomUUID } from 'crypto';
+
 
 const authSchema = new Schema({
+     _id: {
+        type: Schema.Types.UUID,
+        default: () => randomUUID()
+    },
     who: {
-        type: Schema.Types.ObjectId,
+        type: Schema.Types.UUID,
         ref: 'User',
         required: true,
         unique: true

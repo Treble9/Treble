@@ -3,8 +3,15 @@ import Auth from './AUTH.js';
 import bcrypt from 'bcrypt';
 import pkg from 'validator';
 const { isEmail } = pkg;
+import { randomUUID } from 'crypto';
+
+
 // User Model
 const userSchema = new Schema({
+    _id: {
+        type: Schema.Types.UUID,
+        default: () => randomUUID()
+    },
     email: {
         type: String,
         required: true,
@@ -27,7 +34,7 @@ const userSchema = new Schema({
         default: false
     },
     organization: {
-        type: Schema.Types.ObjectId,
+        type: Schema.Types.UUID,
         ref: 'Organization'
     },
     team: {
@@ -40,6 +47,11 @@ const userSchema = new Schema({
         select: false,
     },
 }, { timestamps: true });
+
+// userSchema.pre(/^find/, function (next) {
+//     this.find({ active: { $ne: false } });
+//     next();
+// });
 
 userSchema.statics.CreateAccount = async function (email, password) {
     console.log(email, password)
@@ -90,10 +102,6 @@ userSchema.statics.getUserTeams = async function (userId) {
     }
 }
 
-// Ensure only active users show
-// userSchema.pre(/^find/, function (next) {
-//     this.find({ active: {$ne: false} })
-// });
 
 
 const User = model('User', userSchema);
