@@ -17,7 +17,7 @@ export const createProject = async (req, res) => {
     //when creating project, id of the creator should be added to the model
     const project = req.body;
 
-    const newProject = new Project({ ...project, creator: req.email, createdAt: new Date().toISOString() })
+    const newProject = new Project({ ...project, creator: req.user.email, createdAt: new Date().toISOString() })
     try {
         await newProject.save();
         res.status(201).json({ status: 'Success', data: newProject });

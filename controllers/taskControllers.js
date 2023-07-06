@@ -5,7 +5,7 @@ import Task from "../models/TASK.js";
 export const getTasks = async (req, res) => {
 
     try {
-        const projectId = req.project.id //projectId
+        const projectId = req.projects.id //projectId
         const getAllTasks = await Project.find(projectId).populate('tasks');
         res.status(200).json({ status: 'Success', data: getAllTasks })
     } catch (err) {
@@ -17,7 +17,7 @@ export const createTask = async (req, res) => {
     //when creating project, id of the creator should be added to the model
     const task = req.body;
 
-    const newTask = new Task({ ...task, projectId: req.projectId, createdAt: new Date().toISOString() }) //projectTitle: req.title
+    const newTask = new Task({ ...task, projectId: req.projects.id, createdAt: new Date().toISOString() }) //projectTitle: req.title
     try {
         await newTask.save();
         res.status(201).json({ status: 'Success', data: newTask });
